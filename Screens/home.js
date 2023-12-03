@@ -14,18 +14,7 @@ import Speedometer from './Speedometer'; // Make sure to adjust the path accordi
 
 const Home = () => {
   const navigation=useNavigation();
-  const [inputMessage, setInputMessage] = useState('');
-  const [messages, setMessages] = useState([]);
-  const handleButtonClick = () => {
-    if (inputMessage.trim() !== '') {
-      setMessages([...messages, { text: inputMessage, isUser: true }]);
-      setInputMessage('');
-    }
-  };
-    
-  const handleTextInput = (text) => {
-    setInputMessage(text);
-  };
+  
   const [mood, setMood] = useState('Happy');
   const [stressLevel, setStressLevel] = useState(5);
   const [overallHealth, setOverallHealth] = useState(7); // Assuming a scale of 0-10
@@ -109,28 +98,6 @@ const Home = () => {
           <Text style={styles.gaugeTitle}>Suicidal Thoughts</Text>
           <Speedometer value={suicidalThoughts} maxValue={10} label="Score" />
         </View>
-        {/* <View style ={styles.container}>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={()=> navigation.navigate('chat')}>
-            <View
-              style={{
-                backgroundColor: 'green',
-                padding: 5,
-                marginRight: 10,
-                marginLeft: 270,
-                marginBottom: 10,
-                marginTop:500,
-                borderRadius: 9999,
-                width: 60,
-                height: 60,
-                justifyContent: "center"
-              }}>
-                <MaterialIcons name="message" size={30} color="white" style={{ marginLeft: 10 }} />
-
-            </View>
-          </TouchableOpacity>
-        </View>  
-      </View> */}
       </ScrollView>
       <TouchableOpacity style={styles.floatingIcon} onPress={()=> navigation.navigate('chat')}>
         <MaterialIcons name="message" size={30} color="white" style={styles.floatingIconText} />

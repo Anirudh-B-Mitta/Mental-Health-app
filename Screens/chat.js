@@ -2,25 +2,45 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StatusBar, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const Chat = ({route}) => {
   const navigation=useNavigation();
   const [messages, setMessages] = useState([
-    { text: 'Hello!', id: 1, type: 'incoming' },
-    { text: 'Hi there!', id: 2, type: 'outgoing' },
-    { text: 'How can I help you?', id: 3, type: 'incoming' },
+    { text: 'Hello!', type: 'incoming' },
+    { text: 'Hi there!', type: 'outgoing' },
+    { text: 'How can I help you?', type: 'incoming' },
   ]);
   const [inputText, setInputText] = useState('');
 
-  const handleSend = () => {
-    if (inputText.trim() !== '') {
-      setMessages([
-        ...messages,
-        { text: inputText, id: messages.length + 1, type: 'outgoing' },
-      ]);
-      setInputText('');
-    }
+  const apiKey = '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'
+  const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions'
+
+  const sendMessage = async () => {
+    const prompt = inputText
+    const response = await axios.post(apiUrl, {
+      prompt: prompt,
+      max_tokens: 1024,
+      temperature: 0.5,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      }
+    })
+    const text = response.data.choices[0].text
+    setMessages([...messages, {type: 'outgoing', 'text': inputText}, {type: 'incoming', 'text': text}])
+    setInputText('')
   };
+  // const handleSend = () => {
+  //   if (inputText.trim() !== '') {
+  //     setMessages([
+  //       ...messages,
+  //       { text: inputText, id: messages.length + 1, type: 'outgoing' },
+  //     ]);
+  //     setInputText('');
+  //   }
+  // };
 
   return (
     <View style={{ flex: 1, paddingTop: StatusBar.currentHeight || 0 }}>
@@ -42,7 +62,7 @@ const Chat = ({route}) => {
             </Text>
           </View>
         )}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.text}
       />
       <View
         style={{
@@ -69,7 +89,7 @@ const Chat = ({route}) => {
             padding: 10,
             borderRadius: 25,
           }}
-          onPress={handleSend}
+          onPress={sendMessage}
         >
           <MaterialIcons name="send" size={30} color="white" />
         </TouchableOpacity>
