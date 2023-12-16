@@ -13,7 +13,7 @@ const Chat = ({route}) => {
   ]);
   const [inputText, setInputText] = useState('');
 
-  const apiKey = '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'
+  const apiKey = ''
   const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions'
 
   const sendMessage = async () => {
@@ -32,15 +32,6 @@ const Chat = ({route}) => {
     setMessages([...messages, {type: 'outgoing', 'text': inputText}, {type: 'incoming', 'text': text}])
     setInputText('')
   };
-  // const handleSend = () => {
-  //   if (inputText.trim() !== '') {
-  //     setMessages([
-  //       ...messages,
-  //       { text: inputText, id: messages.length + 1, type: 'outgoing' },
-  //     ]);
-  //     setInputText('');
-  //   }
-  // };
 
   return (
     <View style={{ flex: 1, paddingTop: StatusBar.currentHeight || 0 }}>
