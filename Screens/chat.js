@@ -13,7 +13,7 @@ const Chat = ({route}) => {
   ]);
   const [inputText, setInputText] = useState('');
 
-  const apiKey = ''
+  const apiKey = 'YOUR_API_KEY'
   const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions'
 
   const sendMessage = async () => {
