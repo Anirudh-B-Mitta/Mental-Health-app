@@ -1,9 +1,29 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import axios from 'axios';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const result = await axios.post('http://192.168.0.114:3000/login', { username: email, password: password }, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        console.log(result.data);
+        if (result.data === "Success") {
+          console.log('Login Successful!', { email, password });
+          navigation.navigate('home')
+        }
+    } catch (err) {
+        console.error("Error during login request:", err);
+    }
+  }
+
 
   const handleLogin = () => {
     // Basic validation
@@ -40,7 +60,7 @@ const Login = ({ navigation }) => {
         onChangeText={(text) => setPassword(text)}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <View style={styles.signupLinkContainer}>
